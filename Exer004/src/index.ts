@@ -75,7 +75,7 @@ class Agendamento{
 }
 
 class Agenda{
-    private __agendeamentos = Agendamento[];
+    private __agendeamentos: Agendamento[];
 
     constructor(){
         this.__agendeamentos = [];
