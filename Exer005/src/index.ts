@@ -154,4 +154,43 @@ class Locadora{
         this.__veiculos.push(veiculo)
         return `Placa cadastrada com sucesso.`
     };
-}
+
+    alugarVeiculo(cliente: string, placa: string, dataInicio: string, dataFim: string): string{
+        
+        const placaCadastrada = this.__veiculos.find(v => v.getPlaca() === placa);
+
+        if(!placaCadastrada){
+            throw new Error (`Veiculo indisponivel para alugel`)
+        }
+
+        placaCadastrada.alugar();
+
+        const novoAlugel = new Alugel(cliente, placaCadastrada, dataInicio, dataFim, true)
+
+        this.__alugados.push(novoAlugel)
+        return `Veiculo ${placaCadastrada.getModelo()} alugado`
+    };
+
+    devolverVeiculo(placa: string): string{
+
+        const placaCadastrada = this.__alugados.find(v => v.getVeiculo().getPlaca() === placa && v.getAtivo() === true);
+
+        if(!placaCadastrada){
+            throw new Error (`Veiculo já devolvido.`)
+        };
+
+        placaCadastrada.encerrar();
+        placaCadastrada.getVeiculo().devolver();
+        return `Veiculo devolvido com sucesso.`
+    };
+
+    listarDisponivel(): Veiculo[]{
+        const disponiveis = this.__veiculos.filter(v => v.getDisponivel() === true);
+
+        if(disponiveis.length === 0){
+            throw new Error (`Nenhum veiculo disponivel`);
+        }
+
+        return disponiveis;
+    };
+};
