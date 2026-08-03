@@ -61,19 +61,15 @@ class ItemCarrinho{
 }
 
 class Carrinho{
-    private __produto: Produto;
-    private __quantidade: number;
     private __itens:ItemCarrinho[];
 
-    constructor(produto: Produto, quantidade: number){
-        this.__produto = produto;
-        this.__quantidade = quantidade;
+    constructor(){
         this.__itens = [];
     };
 
     adicionarItem(produto: Produto, quantidade: number){
         if(!produto.estaDisponivel(quantidade)){
-             return (`${this.__produto} não possui quantidades suficientes.`)
+             return (`${produto.getNome()} não possui quantidades suficientes.`)
         };
 
             //Criação do objeto para adição
@@ -81,7 +77,7 @@ class Carrinho{
             //Adição de item
             this.__itens.push(novoItem);
             //validação
-            console.log(`Item: ${produto.getNome()} | quantidade: ${this.__quantidade}, adicionado ao carrinho`)
+            console.log(`Item: ${produto.getNome()} | quantidade: ${produto.getEstoque()}, adicionado ao carrinho`)
     };
 
     removerNome(nomeProduto: string): void{
@@ -97,11 +93,11 @@ class Carrinho{
     };
 
     finalizar(pagamento: boolean){
-        if(pagamento){
-            this.__itens.forEach(item => item.getProduto().diminuirEstoque(item.getQuantidade()))
-            this.__itens = []
+        if(!pagamento){
+            throw new Error("Erro no")
         }
 
-        return (`Erro em pagamento`)
+        this.__itens.forEach(item => item.getProduto().diminuirEstoque(item.getQuantidade()))
+        this.__itens = []
     }
 }

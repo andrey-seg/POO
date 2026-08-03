@@ -10,7 +10,7 @@ class Servico {
     };
 
     toString(){
-        console.log(`Cliente => ${this.__nome} | Duração => ${this.__duracao} | Valor => ${this.__preco}`);
+        return (`Cliente => ${this.__nome} | Duração => ${this.__duracao} | Valor => ${this.__preco}`);
     };
 
     getNome(){
@@ -24,7 +24,7 @@ class Servico {
     getPreco(){
         return this.__preco
     };
-}
+};
 
 class Agendamento{
     private __cliente: string;
@@ -50,7 +50,7 @@ class Agendamento{
    }
 
    toString(){
-    console.log(`Cliente => ${this.__cliente} | Serviço => ${this.__servico} | Data => ${this.__data} | Hoarario => ${this.__horario} | Confirmado => ${this.__confirmado}`);
+    return(`Cliente => ${this.__cliente} | Serviço => ${this.__servico} | Data => ${this.__data} | Hoarario => ${this.__horario} | Confirmado => ${this.__confirmado}`);
    }
 
    getCliente(){
@@ -72,23 +72,41 @@ class Agendamento{
    getConfirmado(){
     return this.__confirmado;
    };
-}
+};
 
 class Agenda{
     private __agendeamentos: Agendamento[];
 
     constructor(){
         this.__agendeamentos = [];
-    }
+    };
 
     agendar(cliente: string, servico: Servico, data: string, horario: string){
         const horarioOcupado = this.__agendeamentos.some(Agendamento => Agendamento.getData() === data && Agendamento.getHorario() === horario);
 
         if(horarioOcupado){
-            throw new Error("Horário ja ocupado!")
+            throw new Error("Horário ja ocupado!");
         }
 
         const novoAgendamento = new Agendamento(cliente, servico, data, horario, false);
         this.__agendeamentos.push(novoAgendamento);
-    }
-}
+    };
+
+    cancelarAgendamento(cliente: string, data: string, horario: string){
+        const agendamento = this.__agendeamentos.find(Agendamento => Agendamento.getCliente() === cliente && Agendamento.getData() === data && Agendamento.getHorario() === horario);
+
+        if(!agendamento){
+            throw new Error(`Agendamento não encontrado`);
+        };
+
+        agendamento.cancelar();
+    };
+
+    listarPorData(data: string){
+        return this.__agendeamentos.filter(Agendamento => Agendamento.getData() === data);
+    };
+
+    listaConfirmados(){
+        return this.__agendeamentos.filter(Agendamento => Agendamento.getConfirmado() === true);
+    };
+};
