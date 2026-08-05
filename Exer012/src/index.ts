@@ -219,7 +219,11 @@ class OrdeService{
       }
 
       try{
+<<<<<<< HEAD
         order.addItem(product!, quantity);
+=======
+        order.addItem(product, quantity);
+>>>>>>> 617815a (feat: adionando atividades POO)
         return{success: true, data: order};
       }catch(error){
         return {success: false, error: (error as Error).message};
