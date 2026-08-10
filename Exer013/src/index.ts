@@ -1,5 +1,5 @@
 interface I_ApiResponse<T>{
-    sucess: boolean,
+    success: boolean,
     data?: T,
     error?: string;
 };
@@ -197,14 +197,14 @@ class clinicService{
         const doctorAlredyRegister = this.__doctors.find(d => d.getID() === doctor.getID());
 
         if(doctorAlredyRegister){
-            return {sucess: false, error: `Doctor alredy register`};
+            return {success: false, error: `Doctor alredy register`};
         };
 
         try{
             this.__doctors.push(doctor);
-            return {sucess: true, data: doctor};
+            return {success: true, data: doctor};
         }catch(error){
-            return {sucess: false, error: (error as Error).message};
+            return {success: false, error: (error as Error).message};
         };
     };
 
@@ -212,14 +212,14 @@ class clinicService{
         const patientAlredyRegister = this.__patients.find(p => p.getId() === patient.getId());
 
         if(patientAlredyRegister){
-            return {sucess: false, error: `Patient alredy register`};
+            return {success: false, error: `Patient alredy register`};
         };
 
         try{
             this.__patients.push(patient);
-            return {sucess: true, data: patient};
+            return {success: true, data: patient};
         } catch(error){
-            return {sucess: false, error: (error as Error).message};
+            return {success: false, error: (error as Error).message};
         };
     };
 
@@ -229,15 +229,15 @@ class clinicService{
         const slotExist = this.__appointment.find(a => a.getSlot() === slot);
 
         if(!doctorExist || !patientExist){
-            return {sucess:false, error: `Doctor ou patient not found.`};
+            return {success:false, error: `Doctor ou patient not found.`};
         };
 
         if(slotExist){
-            return {sucess: false, error: `Slot alredy booked`};
+            return {success: false, error: `Slot alredy booked`};
         };
 
         if(!doctorExist.isAvilable(slot)){
-            return { sucess: false, error: `Slot not available`};
+            return { success: false, error: `Slot not available`};
         };
 
         const id = `apt-${this.__appointment.length + 1}`;
@@ -245,39 +245,63 @@ class clinicService{
 
         doctorExist.removeSlot(slot);
         this.__appointment.push(newAppointment);
-        return {sucess: true, data: newAppointment};
+        return {success: true, data: newAppointment};
     };
 
     confirmAppointment(appointmentID: string): I_ApiResponse<Appointment>{
         const appointmentExit = this.__appointment.find(a => a.getId() === appointmentID);
 
         if(!appointmentExit){
-            return {sucess: false, error: `Appointment not found`};
+            return {success: false, error: `Appointment not found`};
         };
 
+        try{
         appointmentExit.confirm();
-        return {sucess: true, data: appointmentExit};
+        return {success: true, data: appointmentExit};
+        }catch(error){
+            return {success: false, error: (error as Error).message};
+        };
     };
 
     completeAppointment(appointmentID: string): I_ApiResponse<Appointment>{
         const appointmentExit = this.__appointment.find(a => a.getId() === appointmentID);
 
         if(!appointmentExit){
-            return {sucess: false, error: `Appointment not found`};
+            return {success: false, error: `Appointment not found`};
         };
 
+        try{
         appointmentExit.complete()
-        return {sucess: true, data: appointmentExit};
+        return {success: true, data: appointmentExit};
+        }catch(error){
+            return {success: false, error: (error as Error).message};
+        };
     };
 
     cancelAppointment(appointmentID: string): I_ApiResponse<Appointment>{
         const appointmentExit = this.__appointment.find(a => a.getId() === appointmentID);
 
-        if(!appointmentID){
-            return {sucess: false, error: `Appointment not found`}
+        if(!appointmentExit){
+            return {success: false, error: `Appointment not found`}
         };
 
-        appointmentExit?.cancel();
-        return {sucess: true, data: appointmentExit};
+       try{
+        appointmentExit.getDoctor().addSlot(appointmentExit.getSlot());
+        appointmentExit.cancel();
+        return {success: true, data: appointmentExit};
+       } catch(error){
+        return {success: false, error: (error as Error).message};
+       };
+    };
+
+    getDoctorSchedule(doctorID: string): I_ApiResponse<Appointment[]>{
+        const doctorExist = this.__doctors.find(d => d.getID() === doctorID);
+
+        if(!doctorExist){
+            return {success: false, error: `Appointments or doctor not found`};
+        };
+
+        const doctorAppointments = this.__appointment.filter(a => a.getDoctor().getID() === doctorID);
+        return {success: true, data: doctorAppointments};
     };
 };
