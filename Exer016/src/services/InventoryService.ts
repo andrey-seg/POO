@@ -1,6 +1,7 @@
 import { Product } from "../models/Product";
 import { Supplier } from "../models/Supplier";
 import { I_ApiResponse } from "../interfaces/ApiResponse";
+import { I_InventoryReport } from "../interfaces/InventoryReport";
 
 export class InventoryService{
 
@@ -105,5 +106,17 @@ export class InventoryService{
         };
 
         return { success: true, data: selectedSuppliersProducts};
+    };
+
+    generateInventoryReport(minimal: number): I_ApiResponse<I_InventoryReport>{
+        const totalProduct = this.__products.length;
+
+        const totalValue = this.__products.reduce((sum, product) =>{
+            return sum + (product.getPrice() *product.getStock());
+        }, 0);
+
+        const lowStock = this.__products.filter(p => p.getLowStockAlert(minimal))
+
+        return { success: true, data: { totalProduct, totalValue, lowStock }};
     };
 };
