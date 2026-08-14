@@ -23,7 +23,7 @@ export class Product{
 
     addStock(quantity: number, reason: string): void{
 
-        if(quantity >= 0){
+        if(quantity <= 0){
             throw new Error(`Moviment quantity erro`);
         };
 
@@ -61,14 +61,14 @@ export class Product{
 
     adJust(newStock: number, reason: string): void{
 
-        if(newStock >= 0){
+        if(newStock < 0){
             throw new Error(`New Stock erro`)
         };
 
          const moviment = new StockMovement(
             `Mov-${this.__moviments.length + 1}`,
             this.__id,
-            MovimentType.OUT,
+            MovimentType.ADJUSTMENT,
             newStock,
             new Date().toISOString(),
             reason
@@ -78,17 +78,17 @@ export class Product{
         this.__moviments.push(moviment);
     };
 
-    getLowStockAlert(minimum: number): string{
+    getLowStockAlert(minimum: number): boolean{
 
         if(minimum <= 0){
             throw new Error(`Minimal value erro`);
         };
 
-        if(this.__stock < minimum){
-            return `Stock below minimum`;
+        if(this.__stock <= minimum){
+            return true;
         };
 
-        return `Stock at minimum`;
+        return false;
     };
 
     toString(): string{
