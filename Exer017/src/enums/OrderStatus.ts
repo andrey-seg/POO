@@ -1,6 +1,7 @@
 export enum OrderStatus{
-    DELIVERED,
-    SEND,
+    PENDING,
     PREPARING,
-    CANCELED,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
 };
