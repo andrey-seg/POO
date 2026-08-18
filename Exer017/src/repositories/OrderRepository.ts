@@ -60,4 +60,12 @@ export class OrderRepositories implements Repository<Order>{
             }, 100);
         });
     };
+
+    toString(): string{
+        return `Orders => ${this.__Orders}`;
+    };
+
+    getOrders(): Order[]{
+        return this.__Orders;
+    };
 };

@@ -9,12 +9,12 @@ export class Order{
     private __status: OrderStatus;
     private __createdAt: string;
 
-    constructor(id: string, custumerId: string, status: OrderStatus, createdAt: string){
+    constructor(id: string, custumerId: string){
         this.__id = id;
         this.__custumerId = custumerId;
         this.__items = [];
-        this.__status = status;
-        this.__createdAt = createdAt;
+        this.__status = OrderStatus.PENDING;
+        this.__createdAt = new Date().toISOString();
     };
 
     addItem(product: Product, quantity: number): string{
