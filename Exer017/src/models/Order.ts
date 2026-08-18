@@ -29,7 +29,7 @@ export class Order{
         return `Product added`;
     };
 
-    calculateTotal(): number{
+    calculateTotal(): void{
       this.__items.reduce((sum, item) => {
         return sum + item.subtotal();
       }, 0);
