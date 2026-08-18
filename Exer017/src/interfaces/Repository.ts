@@ -1,6 +1,6 @@
 export interface Repository<T>{
     findById(id: string): Promise< T | null>;
     findAll(): Promise<T[]>;
-    save(entity: T): Promise<T>;
+    save(object: T): Promise<T>;
     delete(id: string): Promise<boolean>;
 };
