@@ -43,12 +43,12 @@ export class Appointment{
             throw new Error(`Appoiment alredy cancelled`);
         };
 
-        if(this.__status === AppointmentStatus.COMPLETE){
+        if(this.__status === AppointmentStatus.COMPLETED){
             throw new Error(`Appoinment alredy complete`);
         };
 
         this.__notes = notes;
-        this.__status = AppointmentStatus.COMPLETE;
+        this.__status = AppointmentStatus.COMPLETED;
     };
 
     cancel(): void{
@@ -57,7 +57,7 @@ export class Appointment{
             throw new Error(`Appoiment alredy cancelled`);
         };
 
-        if(this.__status === AppointmentStatus.COMPLETE){
+        if(this.__status === AppointmentStatus.COMPLETED){
             throw new Error(`Appoinment alredy complete`);
         };
 
