@@ -1,9 +1,12 @@
+import { DepartamentType } from "../enums/DepartamentType";
 import { Repository } from "../interfaces/Repository";
 import { Doctor } from "../models/Doctor";
+import { Patient } from "../models/Patient";
 
 export class DoctorRepository implements Repository<Doctor>{
 
     private __doctorList: Doctor[] = [];
+    private __patientList: Patient[] = [];
 
     findById(id: string): Promise<Doctor | null> {
         
@@ -15,6 +18,7 @@ export class DoctorRepository implements Repository<Doctor>{
                 resolve(doctor ?? null);
 
             }, 100);
+
         });
     };
 
@@ -27,6 +31,7 @@ export class DoctorRepository implements Repository<Doctor>{
                 resolve(this.__doctorList);
 
             }, 100);
+
         });
     };
 
@@ -41,6 +46,7 @@ export class DoctorRepository implements Repository<Doctor>{
                 return;
 
             }, 100);
+
         });
     };
 
@@ -61,8 +67,62 @@ export class DoctorRepository implements Repository<Doctor>{
                 resolve(true);
                 return;
             }, 100)
+
         });
     };
 
-    fin
-}
+    findByDepartament(departament: DepartamentType): Promise<Doctor[]>{
+
+        return new Promise((resolve) => {
+
+            setTimeout(() =>{
+
+                 const doctorDepartament = this.__doctorList.filter(d => d.getDepartament() === departament);
+
+                resolve(doctorDepartament);
+
+            }, 100);
+
+        }); 
+    };
+
+    findDoctorById(doctorId: string): Promise<Doctor[]>{
+        
+        return new Promise((resolve) => {
+
+            setTimeout(() => {
+                
+                const findDoctor = this.__doctorList.filter(d => d.getId() === doctorId);
+
+                resolve(findDoctor);
+            }, 100);
+
+        });
+    };
+
+    findPatientById(patientId: string): Promise<Patient[]>{
+
+        return new Promise((resolve) => {
+
+            setTimeout(() => {
+
+                const findPatient = this.__patientList.filter(p => p.getId() === patientId);
+
+                resolve(findPatient);
+            }, 100);
+        });
+    };
+
+    toString(): string{
+        return `Doctor list => ${this.__doctorList} | Patient list => ${this.__patientList}`;
+    };
+
+    getDoctorList(): Doctor[]{
+        return this.__doctorList;
+    };
+
+    getPatientList(): Patient[]{
+        return this.__patientList;
+    };
+    
+};
