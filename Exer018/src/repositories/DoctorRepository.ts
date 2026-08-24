@@ -1,12 +1,10 @@
 import { DepartamentType } from "../enums/DepartamentType";
 import { Repository } from "../interfaces/Repository";
 import { Doctor } from "../models/Doctor";
-import { Patient } from "../models/Patient";
 
 export class DoctorRepository implements Repository<Doctor>{
 
     private __doctorList: Doctor[] = [];
-    private __patientList: Patient[] = [];
 
     findById(id: string): Promise<Doctor | null> {
         
@@ -86,43 +84,11 @@ export class DoctorRepository implements Repository<Doctor>{
         }); 
     };
 
-    findDoctorById(doctorId: string): Promise<Doctor[]>{
-        
-        return new Promise((resolve) => {
-
-            setTimeout(() => {
-                
-                const findDoctor = this.__doctorList.filter(d => d.getId() === doctorId);
-
-                resolve(findDoctor);
-            }, 100);
-
-        });
-    };
-
-    findPatientById(patientId: string): Promise<Patient[]>{
-
-        return new Promise((resolve) => {
-
-            setTimeout(() => {
-
-                const findPatient = this.__patientList.filter(p => p.getId() === patientId);
-
-                resolve(findPatient);
-            }, 100);
-        });
-    };
-
     toString(): string{
-        return `Doctor list => ${this.__doctorList} | Patient list => ${this.__patientList}`;
+        return `Doctor list => ${this.__doctorList}`;
     };
 
     getDoctorList(): Doctor[]{
         return this.__doctorList;
     };
-
-    getPatientList(): Patient[]{
-        return this.__patientList;
-    };
-    
 };
