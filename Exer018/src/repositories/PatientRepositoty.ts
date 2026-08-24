@@ -57,7 +57,7 @@ export class PatientRepository implements Repository<Patient>{
                     return;
                 };
 
-                this.__pacientList.splice(findPatientIndex);
+                this.__pacientList.splice(findPatientIndex, 1);
                 resolve(true);
                 return;
             }, 100);
