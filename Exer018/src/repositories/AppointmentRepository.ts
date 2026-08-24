@@ -71,7 +71,7 @@ export class AppointmentRepository implements Repository<Appointment>{
         return new Promise((resolve) => {
 
             setTimeout(() => {
-                
+
                 const appointments = this.__appointmetsList.filter(a => a.getDoctor().getId() === doctorId);
                 resolve(appointments)
 
@@ -90,6 +90,14 @@ export class AppointmentRepository implements Repository<Appointment>{
 
             }, 100)
         })
+    };
+
+    toString(): string{
+        return `Appointmets list => ${this.__appointmetsList}`;
+    };
+
+    getAppointmetsList(): Appointment[]{
+        return this.__appointmetsList;
     };
 };
 

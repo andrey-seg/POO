@@ -63,4 +63,12 @@ export class PatientRepository implements Repository<Patient>{
             }, 100);
         });
     };
+
+    toString(): string{
+        return `Pacient list => ${this.__pacientList}`;
+    };
+
+    getPacientList(): Patient[]{
+        return this.__pacientList;
+    };
 };
