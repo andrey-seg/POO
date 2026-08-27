@@ -1,6 +1,6 @@
 type Rating = 1 | 2 | 3 | 4 | 5;
 
-export class Reviews{
+export class Review{
 
     private __id: string;
     private __author: string;
