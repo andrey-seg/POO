@@ -1,6 +1,6 @@
-export interface I_ApiResponse{
+export interface I_ApiResponse<T>{
     
-    succes: boolean;
-    data?: string;
+    success: boolean;
+    data?: T;
     error?: string;
 }
