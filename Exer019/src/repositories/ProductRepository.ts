@@ -14,7 +14,7 @@ export class ProductRepository implements I_Repository<Product>{
                 
                 const findProductById = this.__products.find(p => p.getId() === id);
                 resolve(findProductById ?? null);
-            });
+            }, 100);
         });
     }
 
@@ -78,7 +78,7 @@ export class ProductRepository implements I_Repository<Product>{
             setTimeout(() => {
                 const findByStatus = this.__products.filter(p => p.getStatus() === status);
                 resolve(findByStatus);
-            });
+            }, 100);
         });
     }
 }
