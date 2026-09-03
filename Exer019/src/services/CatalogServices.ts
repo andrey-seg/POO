@@ -87,10 +87,44 @@ export class CatalogServices{
         }
     }
 
-    updateProductStatus(productId: string, status: ProductStatus): Promise<I_ApiResponse<Product>>{
+    async updateProductStatus(productId: string, status: ProductStatus): Promise<I_ApiResponse<Product>>{
 
         try{
-            const findProduct
+            const findProduct = await this.__productRepository.findById(productId);
+
+            if(!findProduct){
+                return { success: false, error: `Product not found`};
+            }
+
+            const statusAction = {
+                [ProductStatus.ACTIVE]: () => findProduct.activate(),
+                [ProductStatus.INACTIVE]: () => findProduct.deactivate(),
+                [ProductStatus.OUT_OF_STOCK]: () => findProduct.markOutOfStock()
+            }
+
+            statusAction[status]();
+
+            const saved = await this.__productRepository.save(findProduct);
+            
+            return { success: true, data: saved };
+        }catch(error){
+            return { success: false, error: (error as Error).message };
+        }
+    }
+
+    async getProductReport(productId: string): Promise<I_ApiResponse<Product>>{
+
+        try{
+            
+            const findProduct = await this.__productRepository.findById(productId);
+
+            if(!findProduct){
+                return { success: false, error: `Product not found`};
+            }
+
+            return { success: true, data: findProduct };
+        }catch(error){
+            return { success: false, error: (error as Error).message };
         }
     }
 }
