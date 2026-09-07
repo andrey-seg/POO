@@ -40,4 +40,8 @@ export class CartItem{
     getQuantity(): number{
         return this.__quantity;
     }
+
+    setQuantity(quantity: number): void {
+        this.__quantity = quantity;
+    }
 }
