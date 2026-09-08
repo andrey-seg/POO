@@ -41,4 +41,45 @@ export class Order{
 
         this.__status = orderStatus[currentIndex + 1];
     }
+
+    cancel(): void{
+
+        if(this.__status === OrderStatus.CANCELLED){
+            throw new Error(`Order is alredy cancelled.`);
+        }
+
+        if(this.__status === OrderStatus.DELIVERED){
+            throw new Error(`Order is alredy delivered.`);
+        }
+
+        this.__status += OrderStatus.CANCELLED;
+    }
+
+    toString(): string{
+        return `Id => ${this.__id} | UserId => ${this.__userId} | Items => ${this.__items} | total => ${this.__total} | Status => ${this.__status} | Created At => ${this.__createdAt}`;
+    }
+
+    getId(): string{
+        return this.__id;
+    }
+
+    getUserId(): User{
+        return this.__userId;
+    }
+
+    getItems(): CartItem[]{
+        return this.__items;
+    }
+
+    getTotal(): number{
+        return this.__total;
+    }
+
+    getStatus(): OrderStatus{
+        return this.__status;
+    }
+
+    getCreatedAt(): string{
+        return this.__createdAt;
+    }
 }
