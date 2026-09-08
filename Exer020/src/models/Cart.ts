@@ -33,6 +33,11 @@ export class Cart{
    removeItem(productId: string): void{
 
         const findProductIndex = this.__items.findIndex((i) => i.getProduct().getId() === productId);
+
+        if(findProductIndex === -1){
+            throw new Error("Item not found.");
+        }
+    
         this.__items.splice(findProductIndex, 1);
 
    }
@@ -52,7 +57,7 @@ export class Cart{
 
         return this.__items.reduce((total, item) => {
             return total + item.subTotal();
-        }, 100);
+        }, 0);
     }
 
     clear(): void{

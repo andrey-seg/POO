@@ -36,7 +36,6 @@ export class UserRepository implements I_Repository<User>{
             const findUserById = this.__userList.findIndex((u) => u.getId() === id);
 
             if(findUserById === -1){
-                throw new Error(`User not found.`);
                 resolve(false);
                 return;
             }

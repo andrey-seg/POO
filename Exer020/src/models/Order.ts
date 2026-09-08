@@ -4,13 +4,13 @@ import { OrderStatus } from "../enums/OrderStatus";
 export class Order{
     
     private __id: string;
-    private __userId: User;
+    private __userId: string;
     private __items: CartItem[];
     private __total: number;
     private __status: OrderStatus;
     private __createdAt: string;
 
-    constructor(id: string, userId: User, total: number, status: OrderStatus){
+    constructor(id: string, userId: string, total: number, status: OrderStatus){
 
         this.__id = id;
         this.__userId = userId;
@@ -35,11 +35,11 @@ export class Order{
 
         const currentIndex = orderStatus.indexOf(this.__status);
 
-        if(currentIndex === -1){
+        if(currentIndex === orderStatus.length - 1){
             throw new Error(`Order alredy delivered.`);
         }
 
-        this.__status = orderStatus[currentIndex + 1];
+        this.__status = orderStatus[currentIndex + 1]!;
     }
 
     cancel(): void{
@@ -52,7 +52,7 @@ export class Order{
             throw new Error(`Order is alredy delivered.`);
         }
 
-        this.__status += OrderStatus.CANCELLED;
+        this.__status = OrderStatus.CANCELLED;
     }
 
     toString(): string{
@@ -63,8 +63,8 @@ export class Order{
         return this.__id;
     }
 
-    getUserId(): User{
-        return this.__userId;
+    getUserId(): string{
+        return this.__userId
     }
 
     getItems(): CartItem[]{

@@ -40,7 +40,6 @@ export class ProductRepository implements I_Repository<Product>{
             const findProductById = this.__productList.findIndex((p) => p.getId() === id);
 
             if(findProductById === -1){
-                throw new Error(`Product not found`)
                 resolve( false );
                 return;
             }
@@ -59,5 +58,9 @@ export class ProductRepository implements I_Repository<Product>{
             resolve(findProductByStatus);
             return;
         })
+    }
+
+    getProductList(): Product[]{
+        return this.__productList;
     }
 }
