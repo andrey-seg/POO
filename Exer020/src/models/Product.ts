@@ -1,4 +1,5 @@
 import { ProductStatus } from "../enums/ProductStatus";
+import { generateCustomId } from "../common/idGenerator"
 
 export class Product{
     
@@ -8,9 +9,9 @@ export class Product{
     private __stock: number;
     private __status: ProductStatus;
 
-    constructor(id: string, name: string, price: number, stock: number, status: ProductStatus){
+    constructor(name: string, price: number, stock: number, status: ProductStatus){
 
-        this.__id = id;
+        this.__id = generateCustomId();
         this.__name = name;
         this.__price = price;
         this.__stock = stock;
