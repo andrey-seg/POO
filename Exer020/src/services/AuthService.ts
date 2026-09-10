@@ -36,19 +36,35 @@ export class AuthServices implements I_UserService{
            }
         }
 
-        async login(email: string, password: string, user: User): Promise<I_ApiResponse<User>> {
+        async login(email: string, password: string): Promise<I_ApiResponse<User>> {
             
             try{
 
-                const existingUser = this.__UserZRepository.findByEmail(email);
-                
-                const passwordIsValid = user.validatePassword(password);
+                const user = await this.__UserZRepository.findByEmail(email);
 
-                if(!existingUser || !passwordIsValid){
+                if(!user || !user.validatePassword(password)){
                     return { success: false, error: `User or password incorrect.` };
                 }
 
-                
+                return { success: true, data: user}
+            }catch(error){
+                return { success: false, error: (error as Error).message };
+            }
+        }
+
+        async getProfile(userId: string): Promise<I_ApiResponse<User>> {
+            
+            try{
+
+                const findUser = await this.__UserZRepository.findById(userId);
+
+                if(!findUser){
+                    return { success: false, error: `User not found.` };
+                }
+
+                return { success: true, data: findUser };
+            }catch(error){
+                return { success: false, error: (error as Error).message };
             }
         }
 }
