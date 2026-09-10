@@ -54,4 +54,8 @@ export class UserRepository implements I_Repository<User>{
             resolve( findByEmail ?? null );
         });
     }
+
+    getUserList(): User[]{
+        return this.__userList;
+    }
 }

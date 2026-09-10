@@ -1,4 +1,5 @@
 import { UserRole } from "../enums/UserRole"
+import { generateCustomId } from "../common/idGenerator";
 
 export class User{
     
@@ -9,9 +10,9 @@ export class User{
     private __role: UserRole;
     private __createdAt: string;
 
-    constructor(id: string, name: string, email: string, password: string, role: UserRole){
+    constructor(name: string, email: string, password: string, role: UserRole){
 
-        this.__id = id;
+        this.__id = generateCustomId();
         this.__name = name;
         this.__email = email;
         this.__password = password;
