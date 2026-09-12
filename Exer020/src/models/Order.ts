@@ -1,6 +1,8 @@
 import { User } from "./User";
 import { CartItem } from "./CartItem"
 import { OrderStatus } from "../enums/OrderStatus";
+import { generateCustomId } from "../common/idGenerator";
+
 export class Order{
     
     private __id: string;
@@ -10,9 +12,9 @@ export class Order{
     private __status: OrderStatus;
     private __createdAt: string;
 
-    constructor(id: string, userId: string, total: number, status: OrderStatus){
+    constructor(userId: string, total: number, status: OrderStatus){
 
-        this.__id = id;
+        this.__id = generateCustomId();
         this.__userId = userId;
         this.__items = [];
         this.__total = total;

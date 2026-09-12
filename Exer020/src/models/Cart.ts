@@ -1,16 +1,11 @@
 import { CartItem } from "./CartItem";
 import { Product } from "./Product";
+import { generateCustomId } from "../common/idGenerator";
 
 export class Cart{
     
-    private __userId: string;
-    private __items: CartItem[];
-
-    constructor(userId: string){
-        
-        this.__userId = userId;
-        this.__items = [];
-    }
+    private __userId: string = generateCustomId();
+    private __items: CartItem[] = [];
 
    addItem(product: Product, quantity: number): void{
 
@@ -22,7 +17,6 @@ export class Cart{
         }
 
         const newItem = new CartItem(
-            `ID: ${this.__items.length + 1}`,
             product,
             quantity
         );

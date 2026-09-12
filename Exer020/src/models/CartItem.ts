@@ -1,4 +1,5 @@
 import { Product } from "./Product";
+import { generateCustomId } from "../common/idGenerator";
 
 export class CartItem{
     
@@ -6,9 +7,9 @@ export class CartItem{
     private __product: Product;
     private __quantity: number;
 
-    constructor(id: string, product: Product, quantity: number){
+    constructor(product: Product, quantity: number){
 
-        this.__id = id;
+        this.__id = generateCustomId();
         this.__product = product;
         this.__quantity = quantity;
     }

@@ -48,7 +48,7 @@ export class ProductService{
 
             statusAction[status]();
 
-            const saved = this.__productRepository.save(findProductById!);
+            const saved = await this.__productRepository.save(findProductById!);
 
             return { success: true, data: saved };
 
