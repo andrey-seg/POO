@@ -42,7 +42,7 @@ export class CartService{
             let cart = this.__carts.get(userID);
 
             if(!cart){
-                cart = new Cart(userID);
+                cart = new Cart();
                 this.__carts.set(userID, cart);
             }
 
