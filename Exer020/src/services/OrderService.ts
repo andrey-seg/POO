@@ -111,8 +111,8 @@ export class OrderService{
             findOrderById.cancel();
             const saved = await this.__orderRepository.save(findOrderById);
 
-            return{ success: true, data: saved };\
-            
+            return{ success: true, data: saved };
+
         }catch(error){
             return { success: false, error: (error as Error).message };
         }
