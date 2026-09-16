@@ -4,12 +4,13 @@ import { Cart } from "../models/Cart";
 import { I_ApiResponse } from "../interfaces/I_ApiResponse";
 import { Order } from "../models/Order";
 import { OrderStatus } from "../enums/OrderStatus";
+import { generateCustomId } from "../common/idGenerator";
 
 export class OrderService{
     
     constructor(private __orderRepository: OrderRepository, private __productRepository: ProductRepository){};
 
-    async createOrder(userId: string, cart: Cart): Promise<I_ApiResponse<Order>>{
+    async createOrder(cart: Cart): Promise<I_ApiResponse<Order>>{
 
         try{
             
@@ -32,7 +33,7 @@ export class OrderService{
 
            const order = new Order(
 
-            userId,
+            generateCustomId(),
             cart.caculateTotal(),
             OrderStatus.PENDING
            );
