@@ -31,10 +31,9 @@ describe("OrderService", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         orderService = new OrderService(mockOrderRepository as any, mockProductRepository as any);
+        product = new Product("Banana", 2.99, 110, ProductStatus.ACTIVE);
+        cart = new Cart();
     });
-
-    product = new Product("Banana", 2.99, 110, ProductStatus.ACTIVE);
-    cart = new Cart();
 
     describe("Create Order", () => {
 
@@ -47,16 +46,16 @@ describe("OrderService", () => {
             const result = await orderService.createOrder(cart);
 
             expect(result.success).toBe(true);
-            expect(result.data?.getTotal()).toBe(3.98);
+            expect(result.data?.getTotal()).toBe(5.98);
             expect(result.data?.getStatus()).toBe(OrderStatus.PENDING);
         });
 
-        it("Should return erro for empty cart", async () => {
+        it("Should return error for empty cart", async () => {
 
             const result = await orderService.createOrder(cart);
 
             expect(result.success).toBe(false);
-            expect(result.error).toBe(`Product ${product.getName()} out of stock`);
+            expect(result.error).toBe(`Cart is empty.`);
             expect(mockOrderRepository.save).not.toHaveBeenCalled();
         });
 
@@ -108,7 +107,7 @@ describe("OrderService", () => {
             const result = await orderService.cancelOrder(order.getId());
 
             expect(result.success).toBe(true);
-            expect(result.data?.getStatus).toBe(OrderStatus.CANCELLED);
+            expect(result.data?.getStatus()).toBe(OrderStatus.CANCELLED);
         });
 
         it("Should return erro when cancelling deliverd order", async () => {
@@ -124,17 +123,19 @@ describe("OrderService", () => {
 
     describe("getUserOrders", () => {
 
-        const orders = [
-            new Order(product.getId(), 5000, OrderStatus.PENDING),
-            new Order(product.getId(), 6000, OrderStatus.CONFIRMED)
-        ];
+        it("Should return user orders", async () => {
 
-        mockOrderRepository.findByUser.mockResolvedValue(orders);
+            const orders = [
+                new Order(product.getId(), 5000, OrderStatus.PENDING),
+                new Order(product.getId(), 6000, OrderStatus.CONFIRMED)
+            ];
 
-        const result = await orderService.getUserOrder(orders./*Sla como resolve esse caralho aqui, tenho que acessar um id auto generado? fudeu */);
+            mockOrderRepository.findByUser.mockResolvedValue(orders);
 
-        expect(result.success).toBe(true);
-        expect(result.data).toHaveLength(2);
-        /*Termino amanhã esse caralho*/
+            const result = await orderService.getUserOrder(product.getId());
+
+            expect(result.success).toBe(true);
+            expect(result.data).toHaveLength(2);
+        });
     })
 });
