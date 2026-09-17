@@ -15,7 +15,6 @@ describe("AuthService", () => {
     let authService: AuthServices;
 
     beforeEach(() => {
-        //limpando os mocks
         jest.clearAllMocks();
         authService = new AuthServices(mockUserRepository as any);
     });
@@ -23,7 +22,7 @@ describe("AuthService", () => {
     describe("register", () => {
 
         it("Should register a new user sucefalli", async () => {
-            mockUserRepository.findByEmail().mockResolveValue(null);
+            mockUserRepository.findByEmail.mockResolvedValue(null);
             mockUserRepository.save.mockImplementation((user: User) => Promise.resolve(user));
 
             const result = await authService.register("teste", "teste@email.com", "P@$$W0RD");
@@ -75,8 +74,7 @@ describe("AuthService", () => {
 
         it("Should return erro for wrong email", async () => {
             
-            const createdUser = new User("Teste da Silva", "testeSilva@email.com", "P@$$W0RD", UserRole.CUSTUMER);
-            mockUserRepository.findByEmail.mockResolvedValue(createdUser);
+            mockUserRepository.findByEmail.mockResolvedValue(null);
 
             const result = await authService.login("NãoEtesteSilva@email.com", "P@$$W0RD");
 
@@ -95,7 +93,7 @@ describe("AuthService", () => {
             const result = await authService.getProfile(createdUser.getId());
 
             expect(result.success).toBe(true);
-            expect(result.data?.getId).toBe(createdUser.getId());
+            expect(result.data?.getId()).toBe(createdUser.getId());
         });
 
         it("Should return erro when user is not found", async () => {

@@ -53,6 +53,7 @@ describe("Product", () => {
     });
 
     it("Should activate product", () => {
+        product.deactivate();
         product.activate();
         expect(product.getStatus()).toBe(ProductStatus.ACTIVE);
     });
