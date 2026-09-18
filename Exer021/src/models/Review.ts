@@ -1,7 +1,6 @@
 import { generateCustomId } from "../common/generateId";
 import { Member } from "../models/Member";
-
-type Rating = 1 | 2 | 3 | 4 | 5;
+import { Rating } from "../feature/Rating";
 
 export class Review{
    
