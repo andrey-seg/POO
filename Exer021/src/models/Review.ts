@@ -1,5 +1,4 @@
 import { generateCustomId } from "../common/generateId";
-import { Member } from "../models/Member";
 import { Rating } from "../feature/Rating";
 
 export class Review{
@@ -10,10 +9,10 @@ export class Review{
     private __comment: string;
     private __createdAt: string;
 
-    constructor(member: Member, rating: Rating, comment: string){
+    constructor(memberId: string, rating: Rating, comment: string){
 
-        this.__id = generateCustomId(Review);
-        this.__memberId = member.getId();
+        this.__id = generateCustomId(this);
+        this.__memberId = memberId;
         this.__rating = rating;
         this.__comment = comment;
         this.__createdAt = new Date().toDateString();

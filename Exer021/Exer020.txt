@@ -1,0 +1,190 @@
+gere a estrutura de arquivos e exercício com está estrutura nova
+
+📚 Library Management System
+Structure:
+
+src/
+├── common/
+│   └── generateId.ts
+├── enums/
+│   ├── BookStatus.ts
+│   ├── LoanStatus.ts
+│   └── MemberRole.ts
+├── interfaces/
+│   ├── ApiResponse.ts
+│   └── Repository.ts
+├── models/
+│   ├── Book.ts
+│   ├── Member.ts
+│   ├── Loan.ts
+│   └── Review.ts
+├── repositories/
+│   ├── BookRepository.ts
+│   ├── MemberRepository.ts
+│   └── LoanRepository.ts
+├── services/
+│   ├── AuthService.ts
+│   ├── BookService.ts
+│   └── LoanService.ts
+└── tests/
+    ├── models/
+    │   ├── Book.test.ts
+    │   └── Loan.test.ts
+    └── services/
+        ├── BookService.test.ts
+        └── LoanService.test.ts
+What to implement:
+
+1. common/generateId.ts
+
+typescript
+export function generateCustomId<T>(instance: T): string {
+    const className = (instance as any).constructor.name.toLowerCase();
+    const timeStamp = Date.now();
+    const randomNum = Math.floor(Math.random() * 1000000000000);
+    return `${className}-${timeStamp}-${randomNum}`;
+}
+
+2. Enum BookStatus
+
+AVAILABLE, BORROWED, RESERVED, MAINTENANCE
+
+3. Enum LoanStatus
+
+ACTIVE, RETURNED, OVERDUE
+
+4. Enum MemberRole
+
+ADMIN, MEMBER
+
+5. Class Review
+
+Attributes: id (generateCustomId), memberId, rating (1-5), comment, createdAt
+Methods: isPositive(), toString(), getters
+
+6. Class Book
+
+Attributes: id (generateCustomId), title, author, isbn, status, reviews (Review[])
+Methods:
+borrow() — validates AVAILABLE, changes to BORROWED
+returnBook() — changes to AVAILABLE
+reserve() — validates AVAILABLE, changes to RESERVED
+addReview(memberId, rating, comment) — creates and adds Review
+getAverageRating() — average of all ratings
+isAvailable() — returns true if AVAILABLE
+toString(), getters
+
+7. Class Member
+
+Attributes: id (generateCustomId), name, email, password, role, activeLoans (number)
+Methods:
+validatePassword(password) → boolean
+isAdmin() → boolean
+incrementLoans() — activeLoans++
+decrementLoans() — activeLoans--
+canBorrow() — returns true if activeLoans < 3
+toString(), getters
+
+8. Class Loan
+
+Attributes: id (generateCustomId), book, member, loanDate, dueDate, returnDate, status
+Methods:
+returnLoan() — sets returnDate and status to RETURNED
+markOverdue() — sets status to OVERDUE
+isOverdue() — returns true if current date > dueDate and status is ACTIVE
+getDaysRemaining() — returns days until dueDate
+toString(), getters
+
+9. Class BookRepository implements Repository<Book>
+
+Methods: findById, findAll, save, delete
+Extra: findByIsbn(isbn) → Promise<Book | null>
+Extra: findByStatus(status) → Promise<Book[]>
+Extra: findByAuthor(author) → Promise<Book[]>
+
+10. Class MemberRepository implements Repository<Member>
+
+Methods: findById, findAll, save, delete
+Extra: findByEmail(email) → Promise<Member | null>
+
+11. Class LoanRepository implements Repository<Loan>
+
+Methods: findById, findAll, save, delete
+Extra: findByMember(memberId) → Promise<Loan[]>
+Extra: findByBook(bookId) → Promise<Loan[]>
+Extra: findActive() → Promise<Loan[]>
+
+12. Class AuthService
+
+Receives MemberRepository via constructor
+Methods:
+register(name, email, password) → Promise<ApiResponse<Member>>
+login(email, password) → Promise<ApiResponse<Member>>
+getProfile(memberId) → Promise<ApiResponse<Member>>
+
+13. Class BookService
+
+Receives BookRepository via constructor
+Methods:
+addBook(title, author, isbn) → Promise<ApiResponse<Book>>
+getAvailable() → Promise<ApiResponse<Book[]>>
+addReview(bookId, memberId, rating, comment) → Promise<ApiResponse<Book>>
+getTopRated() → Promise<ApiResponse<Book[]>> — average >= 4
+searchByAuthor(author) → Promise<ApiResponse<Book[]>>
+
+14. Class LoanService
+
+Receives LoanRepository, BookRepository, MemberRepository via constructor
+Methods:
+createLoan(memberId, bookId, dueDate) → Promise<ApiResponse<Loan>>
+returnLoan(loanId) → Promise<ApiResponse<Loan>>
+getMemberLoans(memberId) → Promise<ApiResponse<Loan[]>>
+getOverdueLoans() → Promise<ApiResponse<Loan[]>>
+renewLoan(loanId, newDueDate) → Promise<ApiResponse<Loan>>
+What to test:
+Book.test.ts
+
+typescript
+describe("Book", () => {
+    it("should borrow book successfully")
+    it("should throw error when borrowing unavailable book")
+    it("should return book successfully")
+    it("should add review and calculate average rating")
+    it("should return isAvailable false when borrowed")
+})
+Loan.test.ts
+
+typescript
+describe("Loan", () => {
+    it("should return loan successfully")
+    it("should mark loan as overdue")
+    it("should return isOverdue true when past due date")
+    it("should calculate days remaining correctly")
+})
+BookService.test.ts
+
+typescript
+describe("BookService", () => {
+    it("should add book successfully")
+    it("should return error for duplicate isbn")
+    it("should return available books")
+    it("should add review to book")
+    it("should return top rated books")
+})
+LoanService.test.ts
+
+typescript
+describe("LoanService", () => {
+    it("should create loan successfully")
+    it("should return error when book is unavailable")
+    it("should return error when member cannot borrow")
+    it("should return loan successfully")
+    it("should return overdue loans")
+    it("should renew loan successfully")
+})
+Extra challenge:
+Add a ReportService that:
+
+getMostBorrowedBooks() → books sorted by number of loans
+getMembersWithOverdueLoans() → members with active overdue loans
+Write tests for both methods
