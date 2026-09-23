@@ -44,7 +44,7 @@ export class BookRepository implements IRepository<Book>{
                 return;
             };
 
-            const removeBook = this.__book.splice(findBookIndexById, 1);
+            this.__book.splice(findBookIndexById, 1);
             resolve(true);
         });
     }
