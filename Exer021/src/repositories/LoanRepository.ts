@@ -1,7 +1,8 @@
+import { loanStatus } from "../enums/LoanStatus";
 import { IRepository } from "../interfaces/IRepository";
 import { Loan } from "../models/Loan";
 
-export class loanRepository implements IRepository<Loan>{
+export class LoanRepository implements IRepository<Loan>{
 
     private __loans: Loan[] = [];
 
@@ -38,12 +39,12 @@ export class loanRepository implements IRepository<Loan>{
 
             const findByLoanIndexById = this.__loans.findIndex((l) => l.getId() === id);
 
-            if(!findByLoanIndexById){
+            if(findByLoanIndexById === -1){
                 resolve(false);
                 return;
             }
 
-            this.__loans.splice(findByLoanIndexById);
+            this.__loans.splice(findByLoanIndexById, 1);
             resolve(true);
         });
     }
@@ -52,7 +53,7 @@ export class loanRepository implements IRepository<Loan>{
 
         return new Promise((resolve) => {
 
-            const findMemberById = this.__loans.find((m) => m.getMember().getId() === memberId);
+            const findMemberById = this.__loans.filter((m) => m.getMember().getId() === memberId);
 
             resolve(findMemberById)
         })
@@ -60,9 +61,21 @@ export class loanRepository implements IRepository<Loan>{
 
     findByBook(bookId: string): Promise<Loan[]>{
 
+        return new Promise((resolve) => {
+            
+            const findBookById = this.__loans.filter((l) => l.getBook().getId() === bookId);
+
+            resolve(findBookById);
+        })
     }
 
     findActive(): Promise<Loan[]>{
 
+        return new Promise((resolve) => {
+
+            const activeLoans = this.__loans.filter((l) => l.getStatus() === loanStatus.ACTIVE);
+
+            resolve(activeLoans);
+        })
     }
 }
