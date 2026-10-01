@@ -61,5 +61,39 @@ export class BookServices{
         }
     }
 
-    
+    async getTopRated(): Promise<IApiResponse<Book[]>>{
+
+      try{
+
+            const allBooks = await this.__bookRepository.findAll();
+
+            const topRated = allBooks.filter(b => b.getAverageRating() >= 4);
+
+            if(topRated.length === 0){
+                return { success: false, error: "No top rated book found"};
+            }
+
+            return{ success: true, data: topRated };
+      }catch(error){
+        return { success: false, error: (error as Error).message };
+      }
+    } 
+
+    async serchByAuthor(author: string): Promise<IApiResponse<Book[]>>{
+
+        try{
+
+            const allBooks = await this.__bookRepository.findAll();
+
+            const authorBooks = allBooks.filter(b => b.getAuthor() === author);
+
+            if(authorBooks.length === 0){
+                return { success: false, error: "No book of this author was found." };
+            }
+
+            return{ success: true, data: authorBooks };
+        }catch(error){
+            return { success: false, error: (error as Error).message };
+        }
+    }
 }

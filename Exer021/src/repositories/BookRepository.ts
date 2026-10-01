@@ -1,6 +1,8 @@
 import { IRepository } from "../interfaces/IRepository";
 import { Book } from "../models/Book";
 import { BookStatus } from "../enums/BookStatus";
+import { Rating } from "../feature/Rating";
+import { resolveSoa } from "node:dns";
 
 export class BookRepository implements IRepository<Book>{
 
