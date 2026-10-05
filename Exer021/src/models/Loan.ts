@@ -13,13 +13,13 @@ export class Loan{
     private __returnDate: string;
     private __status: loanStatus;
 
-    constructor(book: Book, member: Member, status: loanStatus){
+    constructor(book: Book, member: Member, dueDate: string, status: loanStatus){
 
         this.__id = generateCustomId(Loan);
         this.__book = book;
         this.__member = member;
         this.__loanDate = new Date().toDateString();
-        this.__dueDate = new Date().toDateString();
+        this.__dueDate = dueDate;
         this.__returnDate = new Date().toDateString();
         this.__status = status;
     }
