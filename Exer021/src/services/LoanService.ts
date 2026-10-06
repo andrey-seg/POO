@@ -56,15 +56,58 @@ export class LoanService{
         }
     }
 
-    async getMemberLoans(memberId: string): Promise<IApiResponse<Loan>>{
+    async getMemberLoans(memberId: string): Promise<IApiResponse<Loan[]>>{
 
         try{
 
-            const findMemberLoansById = this.__loanRepository.findByMember(memberId);
+            const findMemberLoansById = await this.__loanRepository.findByMember(memberId);
 
-            if(!findMemberLoansById){
+            if(findMemberLoansById.length === 0){
                 return { success: false, error: `Cannot find member loans. `};
             }
+
+            return { success: true, data: findMemberLoansById };
+        }catch(error){
+            return { success: false, error: (error as Error).message };
+        }
+    }
+
+    async getOverDueLoans(): Promise<IApiResponse<Loan[]>>{
+
+        try{
+
+            const AllLoans = await this.__loanRepository.findAll();
+            const filterLoans = AllLoans.filter((l) => l.getStatus() === loanStatus.OVERDUE);
+
+            if(AllLoans.length === 0){
+                return { success: false, error: `Cannot find books`};
+            }
+
+            if(filterLoans.length === 0){
+                return { success: false, error: `Cannot find overdue loans.` };
+            }
+
+            return { success: true, data: filterLoans };
+        }catch(error){
+            return { success: false, error: (error as Error).message };
+        }
+    }
+
+    async renewLoan(loansId: string, newDueDate: string): Promise<IApiResponse<Loan>>{
+
+        try{
+            const findLoanById = await this.__loanRepository.findById(loansId);
+
+            if(!findLoanById){
+                return { success: false, error: `Cannot find loan.`};
+            }
+
+            findLoanById.setNewLoanDate(newDueDate);
+            const saved = await this.__loanRepository.save(findLoanById)
+
+            return { success: true, data: saved };
+        }catch(error){
+            return { success: false, error: (error as Error).message };
         }
     }
 }

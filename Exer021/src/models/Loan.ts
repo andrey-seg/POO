@@ -100,4 +100,8 @@ export class Loan{
     getStatus(): loanStatus{
         return this.__status;
     }
+
+    setNewLoanDate(newDueDate: string): void{
+        this.__dueDate = newDueDate;
+    }
 }
