@@ -1,6 +1,4 @@
 import { Book } from "../../models/Book";
-import { Rating } from "../../feature/Rating";
-import { Review } from "../../models/Review";
 import { BookStatus } from "../../enums/BookStatus";
 
 describe("Book" , () => {

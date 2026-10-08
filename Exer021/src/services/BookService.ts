@@ -4,7 +4,7 @@ import { BookStatus } from "../enums/BookStatus";
 import { Rating } from "../feature/Rating";
 import { resolveSoa } from "node:dns";
 
-export class BookRepository implements IRepository<Book>{
+export class BookService implements IRepository<Book>{
 
     private __book: Book[] = [];
 

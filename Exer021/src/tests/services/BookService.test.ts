@@ -1,4 +1,4 @@
-import { BookServices } from "../../services/BookRepository"
+import { BookServices } from "../../services/BookService"
 import { Book } from "../../models/Book";
 import { BookStatus } from "../../enums/BookStatus";
 
@@ -7,7 +7,9 @@ const monkBookRepository = {
     findAll: jest.fn(),
     save: jest.fn(),
     delete: jest.fn(),
-    findBy 
+    findByIsbn: jest.fn(),
+    findByStatus: jest.fn(),
+    findByAuthor: jest.fn()
 } 
 
 describe("BookService", () => {

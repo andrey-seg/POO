@@ -1,24 +1,24 @@
 import { IApiResponse } from "../interfaces/IApiResponse";
 import { Book } from "../models/Book";
-import { BookRepository } from "../services/BookService";
+import { BookService } from "../services/BookService";
 import { BookStatus } from "../enums/BookStatus";
 import { Rating } from "../feature/Rating";
 
-export class BookServices{
+export class BookRepository{
 
-    constructor(private __bookRepository: BookRepository){};
+    constructor(private __bookService: BookService){};
 
     async addBook(title: string, author: string, isbn: string): Promise<IApiResponse<Book>>{
 
         try{
-            const findBookByIsbn = await this.__bookRepository.findByIsbn(isbn);
+            const findBookByIsbn = await this.__bookService.findByIsbn(isbn);
 
             if(findBookByIsbn){
                 return { success: false, error: `Book is alredy registerd.` };
             };
 
             const newBook = new Book(title, author, isbn);
-            this.__bookRepository.save(newBook);
+            this.__bookService.save(newBook);
             
             return{ success: true, data: newBook };
         }catch(error){
@@ -30,7 +30,7 @@ export class BookServices{
 
         try{
 
-            const findBookAveilable = await this.__bookRepository.findByStatus(available);
+            const findBookAveilable = await this.__bookService.findByStatus(available);
 
             if(!findBookAveilable){
                 return { success: false, error: `Cannot find books with that status.` }; 
@@ -46,14 +46,14 @@ export class BookServices{
     
         try{
 
-            const findBook = await this.__bookRepository.findById(bookId);
+            const findBook = await this.__bookService.findById(bookId);
 
             if(!findBook){
                 return{ success: false, error: `Cannot find book.` };
             };
 
             findBook.addReview(memberId, rating, comment);
-            const saved = this.__bookRepository.save(findBook);
+            await this.__bookService.save(findBook);
 
             return{ success: true, data: findBook };
         }catch(error){
@@ -65,7 +65,7 @@ export class BookServices{
 
       try{
 
-            const allBooks = await this.__bookRepository.findAll();
+            const allBooks = await this.__bookService.findAll();
 
             const topRated = allBooks.filter(b => b.getAverageRating() >= 4);
 
@@ -83,7 +83,7 @@ export class BookServices{
 
         try{
 
-            const allBooks = await this.__bookRepository.findAll();
+            const allBooks = await this.__bookService.findAll();
 
             const authorBooks = allBooks.filter(b => b.getAuthor() === author);
 

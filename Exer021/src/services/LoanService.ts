@@ -2,7 +2,7 @@ import { loanStatus } from "../enums/LoanStatus";
 import { IRepository } from "../interfaces/IRepository";
 import { Loan } from "../models/Loan";
 
-export class LoanRepository implements IRepository<Loan>{
+export class LoanService implements IRepository<Loan>{
 
     private __loans: Loan[] = [];
 

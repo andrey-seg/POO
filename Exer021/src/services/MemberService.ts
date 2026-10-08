@@ -1,7 +1,7 @@
 import { IRepository } from "../interfaces/IRepository";
 import { Member } from "../models/Member";
 
-export class MemberRepository implements IRepository<Member>{
+export class MemberService implements IRepository<Member>{
 
     private __members: Member[] = [];
 

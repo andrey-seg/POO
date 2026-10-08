@@ -3,14 +3,12 @@ import { MemberRole } from "../../enums/MemberRole";
 import { Book } from "../../models/Book";
 import { Loan } from "../../models/Loan"
 import { Member } from "../../models/Member";
-import { LoanService } from "../../services/LoanRepository";
 
 describe("Loan", () => {
 
     let loan: Loan;
     let book: Book;
     let member: Member;
-    let status: loanStatus;
 
     beforeEach(() => {
         book = new Book("noites brancas", "dostoievski","87897");

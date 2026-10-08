@@ -1,11 +1,11 @@
-import { MemberRepository } from "../services/MemberService";
+import { MemberService } from "../services/MemberService";
 import { IApiResponse } from "../interfaces/IApiResponse";
 import { Member } from "../models/Member";
 import { MemberRole } from "../enums/MemberRole";
 
-export class AuthService{
+export class AuthRepository{
 
-    constructor(private __memberRepository: MemberRepository){};
+    constructor(private __memberRepository: MemberService){};
 
     async register(name: string, email: string, password: string): Promise<IApiResponse<Member>>{
 
