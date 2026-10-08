@@ -23,14 +23,16 @@ describe("Book" , () => {
 
         it("should throw error when borrowing unavailable book", () => {
             book.borrow();
-            expect(book.borrow()).toThrow();
+            expect(() => book.borrow()).toThrow();
         });
     });
 
     describe("Return book", () => {
 
         it("should return book successfully", () => {
-            expect(book.returnBook()).toBe(book);
+            book.borrow();
+            book.returnBook();
+            expect(book.getStatus()).toBe(BookStatus.AVAILABLE);
         });
     });
 
@@ -38,7 +40,7 @@ describe("Book" , () => {
 
         it("should add review and calculate average rating", () => {
             book.addReview("memberId", 5, "commentary");
-            expect(book.getReviews).toBe(5);
+            expect(book.getReviews()).toHaveLength(1);
         });
 
         it("should calculate average rating", () => {
