@@ -1,113 +1,81 @@
-import { BookRepository } from "../repositories/BookRepository";
-import { LoanRepository } from "../repositories/LoanRepository";
-import { MemberRepository } from "../repositories/MemberRepository";
-import { IApiResponse } from "../interfaces/IApiResponse";
-import { Loan } from "../models/Loan";
 import { loanStatus } from "../enums/LoanStatus";
+import { IRepository } from "../interfaces/IRepository";
+import { Loan } from "../models/Loan";
 
-export class LoanService{
+export class LoanRepository implements IRepository<Loan>{
 
-    constructor(private __loanRepository: LoanRepository, private __bookRepository: BookRepository, private __memberRepository: MemberRepository){};
+    private __loans: Loan[] = [];
 
-    async createLoan(memberId: string, bookId: string, dueDate: string): Promise<IApiResponse<Loan>>{
+    findById(id: string): Promise<Loan | null> {
+        
+        return new Promise((resolve) => {
 
-        try{
+            const findByLoanId = this.__loans.find((l) => l.getId() === id);
 
-            const findMemberById = await this.__memberRepository.findById(memberId);
-            const findBookByid = await this.__bookRepository.findById(bookId);
-
-            if(!findMemberById || !findBookByid){
-                return { success: false, error: `Member not found!.` };
-            }
-
-            if(!findMemberById.canBorrow()){
-                return { success: false, error: `Member cannot borrow more books.` };
-            }
-
-            if(!findBookByid.isAvailable()){
-                return { success: false, error: `Book is not available. ` }; 
-            }
-
-            findBookByid.borrow();
-            findMemberById.incrementLoan();
-
-            const newLoan = new Loan(findBookByid, findMemberById, dueDate, loanStatus.ACTIVE);
-            const saved = await this.__loanRepository.save(newLoan);
-
-            return { success: true, data: saved };
-        }catch(error){
-            return { success: false, error: (error as Error).message };
-        }
+            resolve(findByLoanId ?? null);
+        });
     }
 
-    async returnLoan(loanId: string): Promise<IApiResponse<Loan>>{
+    findAll(): Promise<Loan[]> {
+        
+        return new Promise((resolve) => {
 
-        try{
-
-            const findLoanById = await this.__loanRepository.findById(loanId);
-
-            if(!findLoanById){
-                return { success: false, error: `Loan not found.` };
-            }
-
-            return{ success: true, data: findLoanById };
-        }catch(error){
-            return{ success: false, error: (error as Error).message };
-        }
+            resolve(this.__loans);
+        });
     }
 
-    async getMemberLoans(memberId: string): Promise<IApiResponse<Loan[]>>{
+    save(entity: Loan): Promise<Loan> {
+        
+        return new Promise((resolve) => {
 
-        try{
-
-            const findMemberLoansById = await this.__loanRepository.findByMember(memberId);
-
-            if(findMemberLoansById.length === 0){
-                return { success: false, error: `Cannot find member loans. `};
-            }
-
-            return { success: true, data: findMemberLoansById };
-        }catch(error){
-            return { success: false, error: (error as Error).message };
-        }
+            this.__loans.push(entity);
+            resolve(entity);
+        })
     }
 
-    async getOverDueLoans(): Promise<IApiResponse<Loan[]>>{
+    delete(id: string): Promise<boolean> {
+        
+        return new Promise((resolve) => {
 
-        try{
+            const findByLoanIndexById = this.__loans.findIndex((l) => l.getId() === id);
 
-            const AllLoans = await this.__loanRepository.findAll();
-            const filterLoans = AllLoans.filter((l) => l.getStatus() === loanStatus.OVERDUE);
-
-            if(AllLoans.length === 0){
-                return { success: false, error: `Cannot find books`};
+            if(findByLoanIndexById === -1){
+                resolve(false);
+                return;
             }
 
-            if(filterLoans.length === 0){
-                return { success: false, error: `Cannot find overdue loans.` };
-            }
-
-            return { success: true, data: filterLoans };
-        }catch(error){
-            return { success: false, error: (error as Error).message };
-        }
+            this.__loans.splice(findByLoanIndexById, 1);
+            resolve(true);
+        });
     }
 
-    async renewLoan(loansId: string, newDueDate: string): Promise<IApiResponse<Loan>>{
+    findByMember(memberId: string): Promise<Loan[]>{
 
-        try{
-            const findLoanById = await this.__loanRepository.findById(loansId);
+        return new Promise((resolve) => {
 
-            if(!findLoanById){
-                return { success: false, error: `Cannot find loan.`};
-            }
+            const findMemberById = this.__loans.filter((m) => m.getMember().getId() === memberId);
 
-            findLoanById.setNewLoanDate(newDueDate);
-            const saved = await this.__loanRepository.save(findLoanById)
+            resolve(findMemberById)
+        })
+    }
 
-            return { success: true, data: saved };
-        }catch(error){
-            return { success: false, error: (error as Error).message };
-        }
+    findByBook(bookId: string): Promise<Loan[]>{
+
+        return new Promise((resolve) => {
+            
+            const findBookById = this.__loans.filter((l) => l.getBook().getId() === bookId);
+
+            resolve(findBookById);
+        })
+    }
+
+    findActive(): Promise<Loan[]>{
+
+        return new Promise((resolve) => {
+
+            const activeLoans = this.__loans.filter((l) => l.getStatus() === loanStatus.ACTIVE);
+
+            resolve(activeLoans);
+        })
     }
 }

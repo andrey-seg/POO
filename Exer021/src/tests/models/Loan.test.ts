@@ -3,7 +3,7 @@ import { MemberRole } from "../../enums/MemberRole";
 import { Book } from "../../models/Book";
 import { Loan } from "../../models/Loan"
 import { Member } from "../../models/Member";
-import { LoanService } from "../../services/LoanService";
+import { LoanService } from "../../services/LoanRepository";
 
 describe("Loan", () => {
 

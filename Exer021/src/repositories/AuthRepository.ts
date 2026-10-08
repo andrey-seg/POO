@@ -1,4 +1,4 @@
-import { MemberRepository } from "../repositories/MemberRepository";
+import { MemberRepository } from "../services/MemberService";
 import { IApiResponse } from "../interfaces/IApiResponse";
 import { Member } from "../models/Member";
 import { MemberRole } from "../enums/MemberRole";
