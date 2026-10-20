@@ -66,4 +66,32 @@ export class Doctor{
 
         this.__active = false;
     }
+
+    toString(): string{
+        return `id: ${this.__id} | name: ${this.__name} | ${this.__email} | especialty: ${this.__specialty} | avilable slots: ${this.__availableSlots} | Active? ${this.__active}`;
+    }
+
+    getId(): string{
+        return this.__id;
+    }
+
+    getName(): string{
+        return this.__name;
+    }
+
+    getEmail(): string{
+        return this.__email;
+    }
+
+    getEspecialty(): DoctorSpecialty{
+        return this.__specialty;
+    }
+
+    getAvailableSlot(): String[]{
+        return this.__availableSlots;
+    }
+
+    getActive(): boolean{
+        return this.__active;
+    }
 }
