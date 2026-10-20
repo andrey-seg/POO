@@ -1,4 +1,4 @@
-export function generateCustomId<T>(instance: T): string{
+export function GenerateCustomId<T>(instance: T): string{
 
     const className = (instance as any).constructor.name.toLowerCase();
     const timeStamp = Date.now();
