@@ -23,6 +23,11 @@ export class Book{
     }
 
     borrow(): void{
+
+        if(this.__status !== BookStatus.AVAILABLE){
+            throw new Error(`Book is not available to borrow.`);
+        };
+
         this.__status = BookStatus.BORROWED;
     }
 

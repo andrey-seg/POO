@@ -18,7 +18,7 @@ export class BookRepository{
             };
 
             const newBook = new Book(title, author, isbn);
-            this.__bookService.save(newBook);
+            await this.__bookService.save(newBook);
             
             return{ success: true, data: newBook };
         }catch(error){

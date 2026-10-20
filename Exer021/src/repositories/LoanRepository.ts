@@ -50,6 +50,14 @@ export class LoanRepository{
                 return { success: false, error: `Loan not found.` };
             }
 
+            if(findLoanById.getStatus() === loanStatus.RETURNED){
+                return { success: false, error: `Loan is alredy returned.` };
+            }
+
+            findLoanById.returnLoan();
+            findLoanById.getBook().returnBook();
+            findLoanById.getMember().decrementLoan();
+
             return{ success: true, data: findLoanById };
         }catch(error){
             return{ success: false, error: (error as Error).message };
