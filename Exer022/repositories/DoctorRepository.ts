@@ -1,5 +1,4 @@
 import { Doctor } from "../models/Doctor";
-import { IApiResponse } from "../interfaces/ApiResponse";
 import { IRepository } from "../interfaces/Repository";
 import { DoctorSpecialty } from "../enums/DoctorSpecialty";
 
