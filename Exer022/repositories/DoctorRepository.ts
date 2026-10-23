@@ -36,23 +36,30 @@ export class DoctorRepository implements IRepository<Doctor>{
         })
     }
 
-    delete(id: string): boolean {
-        const findDoctorIndexById = this.__doctorRepository.findIndex((d) => d.getId() === id);
+    delete(id: string): Promise<boolean> {
 
-        if(findDoctorIndexById === -1){
-            console.log(`Cannot find doctor`);
-            return false;
-        }
+        return new Promise((resolve) => {
 
-        this.__doctorRepository.splice(findDoctorIndexById, 1);
-        return true;
+            const findDoctorIndexById = this.__doctorRepository.findIndex((d) => d.getId() === id);
+
+            if(findDoctorIndexById === -1){
+                console.log(`Cannot find doctor`);
+                resolve(false);
+                return;
+            }
+
+            this.__doctorRepository.splice(findDoctorIndexById, 1);
+            resolve(true);
+            return;
+
+        });
     }
 
-    findBySpecialty(specilty: DoctorSpecialty): Promise<Doctor>{
+    findBySpecialty(specilty: DoctorSpecialty): Promise<Doctor[]>{
         
         return new Promise((resolve) => {
 
-            const findByDoctorSpecialty = this.__doctorRepository.find((d) => d.getEspecialty() === specilty);
+            const findByDoctorSpecialty = this.__doctorRepository.filter((d) => d.getEspecialty() === specilty);
 
             if(!findByDoctorSpecialty){
                 throw new Error(`Cannot find doctor by specialty`);
