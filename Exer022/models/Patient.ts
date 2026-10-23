@@ -97,7 +97,7 @@ export class Patient{
         return this.__status;
     }
 
-    getMedicalRecord(): MedicalRecord{
+    getMedicalRecord(): MedicalRecord[]{
         return this.__medicalRecord;
     }
 }
