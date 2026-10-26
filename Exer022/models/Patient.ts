@@ -9,7 +9,7 @@ export class Patient{
     private __email: string;
     private __phone: string;
     private __status: PatientStatus;
-    private __medicalRecord: MedicalRecord[];
+    private __medicalRecord?: MedicalRecord[];
 
     constructor(name: string, email: string, phone: string, status: PatientStatus){
 
