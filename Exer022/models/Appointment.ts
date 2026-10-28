@@ -9,8 +9,8 @@ export class Appointment{
     private __doctor: Doctor;
     private __patient: Patient;
     private __slot: string;
-    private __status: AppointmentStatus;
-    private __notes: string[];
+    private __status?: AppointmentStatus;
+    private __notes?: string[];
     private __createdAt: string;
 
     constructor(doctor: Doctor, patient: Patient, slot: string, status: AppointmentStatus.SCHEDULED){
@@ -41,7 +41,7 @@ export class Appointment{
         }
 
         if(notes !== undefined){
-            this.__notes.push(notes);
+            this.__notes!.push(notes);
         }
         return true;
     }
@@ -84,11 +84,11 @@ export class Appointment{
     }
 
     getStatus(): AppointmentStatus{
-        return this.__status;
+        return this.__status!;
     }
 
     getSlot(): string[]{
-        return this.__notes;
+        return this.__notes!;
     }
 
     getCreatedAt(): string{
