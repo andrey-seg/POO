@@ -12,7 +12,7 @@ describe("Appointment", () => {
     beforeEach(() => {
         doctor = new Doctor("Dr. Smith", "smith@clinic.com", DoctorSpecialty.CARDIOLOGY);
         patient = new Patient("Alice", "alice@email.com", "11999999999");
-        appointement = new Appointment(doctor, patient, "terça-feira 09:00", AppointmentStatus.NO_SHEDULED);
+        appointement = new Appointment(doctor, patient, "terça-feira 09:00", );
     });
 
     describe(confirm, () => {

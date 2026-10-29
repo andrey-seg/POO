@@ -13,13 +13,13 @@ export class Appointment{
     private __notes?: string[];
     private __createdAt: string;
 
-    constructor(doctor: Doctor, patient: Patient, slot: string, status: AppointmentStatus.NO_SHEDULED){
+    constructor(doctor: Doctor, patient: Patient, slot: string){
 
         this.__id = GenerateCustomId(AppointmentStatus);
         this.__doctor = doctor;
         this.__patient = patient;
         this.__slot = slot;
-        this.__status = status;
+        this.__status = AppointmentStatus.NO_SHEDULED;
         this.__notes = [];
         this.__createdAt = new Date().toISOString();
     }
