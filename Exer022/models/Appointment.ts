@@ -13,7 +13,7 @@ export class Appointment{
     private __notes?: string[];
     private __createdAt: string;
 
-    constructor(doctor: Doctor, patient: Patient, slot: string, status: AppointmentStatus.SCHEDULED){
+    constructor(doctor: Doctor, patient: Patient, slot: string, status: AppointmentStatus.NO_SHEDULED){
 
         this.__id = GenerateCustomId(AppointmentStatus);
         this.__doctor = doctor;
@@ -36,6 +36,10 @@ export class Appointment{
 
     complete(notes?: string): boolean{
 
+        if(this.__status === AppointmentStatus.NO_SHEDULED){
+            throw new Error(`Appointment is not scheduled`);
+        }
+
         if(this.__status === AppointmentStatus.CONFIRMED){
             throw new Error(`Appointement alredy confirmed`);
         }
@@ -57,6 +61,11 @@ export class Appointment{
     }
 
     markNoShow(): boolean{
+
+        if(this.__status === AppointmentStatus.NO_SHEDULED){
+            throw new Error(`Appointment is not scheduled`);
+        }
+
 
         if(this.__status === AppointmentStatus.NO_SHOW){
             throw new Error(`Status alredy marked as no show`);
@@ -85,6 +94,10 @@ export class Appointment{
 
     getStatus(): AppointmentStatus{
         return this.__status!;
+    }
+
+    getNotes(): string[]{
+        return this.__notes;
     }
 
     getSlot(): string[]{

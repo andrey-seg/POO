@@ -8,16 +8,16 @@ export class Patient{
     private __name: string;
     private __email: string;
     private __phone: string;
-    private __status: PatientStatus;
+    private __status?: PatientStatus;
     private __medicalRecord?: MedicalRecord[];
 
-    constructor(name: string, email: string, phone: string, status: PatientStatus){
+    constructor(name: string, email: string, phone: string){
 
         this.__id = GenerateCustomId(Patient);
         this.__name = name;
         this.__email = email;
         this.__phone = phone;
-        this.__status = status;
+        this.__status = PatientStatus.ACTIVE;
         this.__medicalRecord = [];
     }
 
