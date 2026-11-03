@@ -37,7 +37,7 @@ export class Patient{
     block(): boolean{
 
         if(this.__status === PatientStatus.BLOCKED){
-            return false;
+            throw new Error(`Patient is alredy blocked`);
         }
 
         this.__status = PatientStatus.BLOCKED;
@@ -47,7 +47,7 @@ export class Patient{
     activate(): boolean{
 
         if(this.__status === PatientStatus.ACTIVE){
-            return false;
+            throw new Error(`Patient is alredy active`)
         }
 
         this.__status = PatientStatus.ACTIVE;

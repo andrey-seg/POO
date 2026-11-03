@@ -23,7 +23,7 @@ describe("Doctor", () => {
     describe("Doctor status manipulation", () => {
         
         it("Should thow when alredy activate doctor successfully", () => {
-            expect(doctor.setActive()).toThrow();
+            expect(() => doctor.setActive()).toThrow();
         });
 
         it("Should deactivate doctor successfully", () => {

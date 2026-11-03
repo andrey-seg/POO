@@ -39,14 +39,14 @@ describe("Patient", () => {
 
         it("should throw error when blocking an already blocked patient", () => {
             patient.block();
-            expect(patient.block()).toThrow();
+            expect(() => patient.block()).toThrow();
         });
     });
 
     describe("IsActive", () => {
 
         it("should return true for a new patient", () => {
-            expect(patient.isActive).toBe(true);
+            expect(patient.isActive()).toBe(true);
         });
 
         it("should return false when block", () => {
@@ -59,11 +59,11 @@ describe("Patient", () => {
 
         it("should activate a blocked patient successfully", () => {
             patient.block();
-            expect(patient.activate()).toBe(PatientStatus.ACTIVE);
+            expect(patient.activate()).toBe(true);
         });
 
         it("should throw error when activating an already active patient", () => {
-            expect(patient.activate()).toThrow();
+            expect(() => patient.activate()).toThrow();
         });
     });
 });

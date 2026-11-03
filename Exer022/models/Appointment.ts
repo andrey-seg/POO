@@ -10,7 +10,7 @@ export class Appointment{
     private __patient: Patient;
     private __slot: string;
     private __status?: AppointmentStatus;
-    private __notes?: string[];
+    private __notes?: string;
     private __createdAt: string;
 
     constructor(doctor: Doctor, patient: Patient, slot: string){
@@ -19,60 +19,48 @@ export class Appointment{
         this.__doctor = doctor;
         this.__patient = patient;
         this.__slot = slot;
-        this.__status = AppointmentStatus.NO_SHEDULED;
-        this.__notes = [];
+        this.__status = AppointmentStatus.SCHEDULED;
+        this.__notes = "";
         this.__createdAt = new Date().toISOString();
     }
 
-    confirm(): boolean{
-
-        if(this.__status === AppointmentStatus.CONFIRMED){
-            throw new Error(`Status is alredy confirmed`);
+    confirm(): void {
+        if(this.__status !== AppointmentStatus.SCHEDULED){
+            throw new Error("Only scheduled appointments can be confirmed.");
         }
-
+        
         this.__status = AppointmentStatus.CONFIRMED;
-        return true;
     }
 
-    complete(notes?: string): boolean{
-
-        if(this.__status === AppointmentStatus.NO_SHEDULED){
-            throw new Error(`Appointment is not scheduled`);
-        }
-
-        if(this.__status === AppointmentStatus.CONFIRMED){
-            throw new Error(`Appointement alredy confirmed`);
-        }
-
-        if(notes !== undefined){
-            this.__notes!.push(notes);
-        }
-        return true;
+    complete(notes: string): void {
+    if(this.__status !== AppointmentStatus.CONFIRMED){
+        throw new Error("Only confirmed appointments can be completed.");
     }
 
-    cancel(): boolean{
+    this.__notes = notes;
+    this.__status = AppointmentStatus.COMPLETED;
+    }
+
+    cancel(): void {
+
+        if(this.__status === AppointmentStatus.COMPLETED){
+            throw new Error("Cannot cancel a completed appointment.");
+        }
 
         if(this.__status === AppointmentStatus.CANCELLED){
-            throw new Error(`Appointement is alredy cancelled`)
+            throw new Error("Appointment is already cancelled.");
         }
 
         this.__status = AppointmentStatus.CANCELLED;
-        return true;
     }
 
-    markNoShow(): boolean{
+    markNoShow(): void {
 
-        if(this.__status === AppointmentStatus.NO_SHEDULED){
-            throw new Error(`Appointment is not scheduled`);
-        }
-
-
-        if(this.__status === AppointmentStatus.NO_SHOW){
-            throw new Error(`Status alredy marked as no show`);
+        if(this.__status !== AppointmentStatus.CONFIRMED){
+            throw new Error("Only confirmed appointments can be marked as no show.");
         }
 
         this.__status = AppointmentStatus.NO_SHOW;
-        return true;
     }
 
     toString(): string{
@@ -96,12 +84,12 @@ export class Appointment{
         return this.__status!;
     }
 
-    getNotes(): string[]{
+    getNotes(): string{
         return this.__notes;
     }
 
-    getSlot(): string[]{
-        return this.__notes!;
+    getSlot(): string{
+        return this.__slot;
     }
 
     getCreatedAt(): string{

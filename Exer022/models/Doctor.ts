@@ -49,22 +49,24 @@ export class Doctor{
         return true;
     }
 
-    setActive(): void{
+    setActive(): boolean{
         
         if(this.__active){
             throw new Error(`Doctor is alredy active.`);
         }
 
         this.__active = true;
+        return true;
     }
 
-    setDeactivate(): void{
+    setDeactivate(): boolean{
 
         if(!this.__active){
             throw new Error(`Doctor is alredy deactivate`)
         }
 
         this.__active = false;
+        return true
     }
 
     toString(): string{

@@ -15,7 +15,7 @@ describe("Appointment", () => {
         appointement = new Appointment(doctor, patient, "terça-feira 09:00", );
     });
 
-    describe(confirm, () => {
+    describe("confirm", () => {
 
         it("should confirm appointment successfully", () => {
             appointement.confirm();
@@ -24,12 +24,12 @@ describe("Appointment", () => {
 
         it("should throw error when confirming an already confirmed appointment", () => {
             appointement.confirm();
-            expect(appointement.complete()).toThrow();
+            expect(() => appointement.confirm()).toThrow();
         });
 
         it("should throw error when confirming a cancelled appointment", () => {
             appointement.cancel();
-            expect(appointement.complete()).toThrow();
+            expect(() => appointement.confirm()).toThrow();
         });
     });
 
@@ -40,7 +40,7 @@ describe("Appointment", () => {
             appointement.complete("Paciente está vivo.");
 
             expect(appointement.getStatus()).toBe(AppointmentStatus.COMPLETED);
-            expect(appointement.getNotes()).toBe("Patient in good health"); //Pode causar erro por não retornar lista? sla
+            expect(appointement.getNotes()).toBe("Paciente está vivo."); //Pode causar erro por não retornar lista? sla
         });
 
         it("should throw error when completing a non-confirmed appointment", () => {
@@ -67,7 +67,7 @@ describe("Appointment", () => {
         it("should mark no show successfully", () => {
             appointement.confirm();
             appointement.markNoShow();
-            expect(appointement.getStatus()).toThrow();
+            expect(appointement.getStatus()).toBe(AppointmentStatus.NO_SHOW);
         });
 
         it("should throw error when marking no show on non-confirmed appointment", () => {

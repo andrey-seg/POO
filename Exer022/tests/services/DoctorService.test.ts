@@ -40,7 +40,7 @@ describe("DoctorService", () => {
 
             const result = await doctorService.registerDoctor("Dr. Jones", "smith@clinic.com", DoctorSpecialty.CARDIOLOGY);
 
-            expect(result).toBe(false);
+            expect(result.success).toBe(false);
             expect(mockDoctorRepository.save).not.toHaveBeenCalled();
         });
     });
@@ -63,7 +63,7 @@ describe("DoctorService", () => {
             const result = await doctor.addSlot("09:00");
 
             expect(result).toBe(false);
-            expect(mockDoctorRepository.save).toHaveBeenCalled();
+            expect(mockDoctorRepository.save).not.toHaveBeenCalled();
         });
 
         it("should return error when doctor not found", async () => {
