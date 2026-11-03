@@ -23,8 +23,7 @@ export class AppointmentService{
             const newAppointment = new Appointment(
                 findDoctorById,
                 findPatientById,
-                slot,
-                AppointmentStatus.SCHEDULED
+                slot
             );
 
             this.__appointmentRepository.save(newAppointment);
