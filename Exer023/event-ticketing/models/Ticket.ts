@@ -38,7 +38,7 @@ export class Ticket{
             throw new Error(`Ticket is alredy payed.`);
         }
 
-        this.__price - this.__price;
+        this.__status = TicketStatus.PAID;
         return true;
     }
 
@@ -54,12 +54,8 @@ export class Ticket{
 
     use(): boolean{
 
-        if(this.__status === TicketStatus.CANCELLED || this.__status === TicketStatus.USED){
-            throw new Error(`Ticket is alredy used | cancelled`);
-        }
-
-        if(this.__paymentStatus === paymentStatus.PENDING_PAYMENT){
-            throw new Error(`Ticket payment is pending`);
+        if(this.__status !== TicketStatus.PAID){
+            throw new Error(`Only paid tickets can be used`);
         }
 
         this.__status = TicketStatus.USED;
