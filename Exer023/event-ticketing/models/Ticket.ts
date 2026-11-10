@@ -3,7 +3,6 @@ import { Customer } from "./Customer";
 import { TicketType } from "../enums/TicketType";
 import { TicketStatus } from "../enums/TicketStatus";
 import { GenerateCustomId } from "../common/generateId";
-import { paymentStatus } from "../enums/PaymentStatus";
 
 export class Ticket{
 
@@ -13,7 +12,6 @@ export class Ticket{
     private __type: TicketType;
     private __price: number;
     private __status: TicketStatus;
-    private __paymentStatus: paymentStatus;
     private __createdAt: string;
 
     constructor(event: Event, custumer: Customer, type: TicketType, price: number){
@@ -24,18 +22,23 @@ export class Ticket{
         this.__type = type;
         this.__price = price;
         this.__status = TicketStatus.RESERVED;
-        this.__paymentStatus = paymentStatus.PENDING_PAYMENT;
         this.__createdAt = new Date().toISOString();
+    }
+
+    private calculatePrice(basePrice: number, type: TicketType): number{
+        const multipliers: Record<TicketType, number> = {
+            [TicketType.STANDARD]: 1,
+            [TicketType.VIP]: 2,
+            [TicketType.STUDENT]: 0.5
+        };
+
+        return basePrice * multipliers[type];
     }
 
     pay(): boolean{
 
         if(this.__status !== TicketStatus.RESERVED){
-            throw new Error(`Ticket is not `)
-        }
-
-        if(this.__paymentStatus === paymentStatus.PAYED){
-            throw new Error(`Ticket is alredy payed.`);
+            throw new Error(`Ticket is not reserved`)
         }
 
         this.__status = TicketStatus.PAID;
@@ -45,7 +48,7 @@ export class Ticket{
     cancel(): boolean{
 
         if(this.__status === TicketStatus.CANCELLED || this.__status === TicketStatus.USED){
-            throw new Error(`Ticket is alredy used | cancelled`);
+            throw new Error(`Ticket is alredy used or cancelled`);
         }
 
         this.__status = TicketStatus.CANCELLED;

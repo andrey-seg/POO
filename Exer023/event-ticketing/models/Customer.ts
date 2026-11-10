@@ -4,13 +4,15 @@ export class Customer{
     
     private __id: string;
     private __name: string;
+    private __email: string
     private __isStudent: boolean;
     private __createdAt: string;
 
-    constructor(name: string, isStudent: boolean){
+    constructor(name: string, email: string, isStudent: boolean){
 
         this.__id = GenerateCustomId(Customer);
         this.__name = name;
+        this.__email = email;
         this.__isStudent = isStudent;
         this.__createdAt = new Date().toISOString();
     }
@@ -25,6 +27,10 @@ export class Customer{
 
     getName(): string{
         return this.__name;
+    }
+
+    getEmail(): string{
+        return this.__email;
     }
 
     getIsStudent(): boolean{
