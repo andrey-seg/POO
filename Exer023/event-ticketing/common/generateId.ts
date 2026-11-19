@@ -1,7 +1,5 @@
-export function GenerateCustomId<T>(instance: T): string{
+export function GenerateCustomId(instance: object): string{
 
     const className = (instance as any).constructor.name.toLowerCase();
-    const timeStamp = Date.now();
-    const randomNum = Math.floor(Math.random() * 1000000000);
-    return `${className} = ${timeStamp} = ${randomNum}`;
+    return `${className} = ${crypto.randomUUID()}`;
 }

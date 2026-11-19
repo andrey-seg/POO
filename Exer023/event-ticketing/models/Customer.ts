@@ -10,7 +10,7 @@ export class Customer{
 
     constructor(name: string, email: string, isStudent: boolean){
 
-        this.__id = GenerateCustomId(Customer);
+        this.__id = GenerateCustomId(this);
         this.__name = name;
         this.__email = email;
         this.__isStudent = isStudent;
@@ -41,3 +41,7 @@ export class Customer{
         return this.__createdAt;
     }
 }
+
+const newCustomer = new Customer("andrey", "andrey@email.com", true);
+
+console.log(newCustomer);

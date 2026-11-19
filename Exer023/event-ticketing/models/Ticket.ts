@@ -16,7 +16,7 @@ export class Ticket{
 
     constructor(event: Event, custumer: Customer, type: TicketType, price: number){
 
-        this.__id = GenerateCustomId(Ticket);
+        this.__id = GenerateCustomId(this);
         this.__event = event;
         this.__custumer = custumer;
         this.__type = type;
