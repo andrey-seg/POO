@@ -1,5 +1,6 @@
-export function GenerateCustomId(instance: object): string{
+import { randomUUID } from "node:crypto";
 
-    const className = (instance as any).constructor.name.toLowerCase();
-    return `${className} = ${crypto.randomUUID()}`;
+export function GenerateCustomId(instance: object): string{
+    const className = instance.constructor.name.toLowerCase();
+    return `${className}-${randomUUID()}`;
 }
