@@ -1,6 +1,7 @@
 import { IApiResponse } from "../interfaces/IApiResponse";
 import { EventRepository } from "../repositories/EventRepository";
 import { Event } from "../models/Event";
+import { EventStatus } from "../enums/EventStatus";
 
 export class EventService{
 
@@ -38,13 +39,42 @@ export class EventService{
             const findById = await this.__eventRepository.findById(eventId);
 
             if(!findById){
-                return{ success: true, error: `Cannot find event by id`};
+                return{ success: false, error: `Cannot find event by id`};
             }
 
             findById.publish();
             return{ success: true, data: findById };
         }catch(error){
             return{ success: true, error: (error as Error).message };
+        }
+    }
+
+    async cancelEvent(eventId: string): Promise<IApiResponse<Event>>{
+
+        try{
+
+            const findById = await this.__eventRepository.findById(eventId);
+
+            if(!findById){
+                return{ success: false, error: `Cannot find event by id`};
+            }
+
+            findById.cancel();
+            return{ success: true, data: findById };
+        }catch(error){
+            return{ success: false, error: (error as Error).message };
+        }
+    }
+
+    async getPublishedEvents(): Promise<IApiResponse<Event[]>>{
+
+        try{
+
+            const eventList = await this.__eventRepository.findByStatus(EventStatus.PUBLISHED);
+
+            return{ success: true, data: eventList}
+        }catch(error){
+            return{ success: false, error: (error as Error).message };
         }
     }
 }

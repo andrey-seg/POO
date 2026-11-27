@@ -63,11 +63,11 @@ export class EventRepository implements IRespository<Event>{
         });
     }
 
-    findByStatus(status: EventStatus): Promise<Event | null>{
+    findByStatus(status: EventStatus): Promise<Event[] | null>{
 
         return new Promise((resolve) => {
 
-            const findByStatus = this.__eventRepository.find((e) => e.getStatus() === status);
+            const findByStatus = this.__eventRepository.filter((e) => e.getStatus() === status);
 
             if(!findByStatus){
                 resolve(null);
@@ -79,15 +79,14 @@ export class EventRepository implements IRespository<Event>{
         });
     }
 
-    findByName(name: string): Promise<Event | null>{
+    findByName(name: string): Promise<Event>{
 
         return new Promise((resolve) => {
 
             const findByName = this.__eventRepository.find((e) => e.getName() === name)
 
             if(!findByName){
-                resolve(null);
-                return;
+              throw new Error(`Cannot find events by status.`)
             }
 
             resolve(findByName);
